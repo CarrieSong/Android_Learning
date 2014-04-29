@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+<PreferenceCategory android:title="About">
+  <Preference   
+     android:key="author"  
+     android:title="Author"    
+     android:summary="Yabin Song" >  
+  </Preference> 
+  <Preference   
+     android:key="version"  
+     android:title="Version"    
+     android:summary="1.2"   >
+  </Preference> 
+  <Preference   
+     android:key="description"  
+     android:title="Description"    
+     android:summary="This is a food order application for Mcdonald's."  > 
+  </Preference> 
+</PreferenceCategory>
+
+<PreferenceCategory android:title="Location services" android:key="set_local">  
+  <CheckBoxPreference   
+     android:key="apply_wifi"   
+     android:title="Access to my location by wifi"   
+     android:summary="Allow apps that have asked your permission to use your location information"  
+     android:defaultValue="true" >  
+  </CheckBoxPreference>  
+  <CheckBoxPreference   
+     android:key="apply_gps"   
+     android:title="Use GPS satellities"   
+     android:summary="Allow apps to use GPS to pinpoint your location(need more power and limited by the weather condition)" 
+  	 android:defaultValue="false" >
+  </CheckBoxPreference>   
+  
+</PreferenceCategory>  
+  
+<PreferenceCategory android:title="My information">  
+  <EditTextPreference   
+     android:key="address_edit"   
+     android:title="Input the delievery address">  
+  </EditTextPreference> 
+  <EditTextPreference   
+     android:key="number_edit"   
+     android:title="Input the phone number">  
+  </EditTextPreference> 
+</PreferenceCategory>  
+
+</PreferenceScreen>
+
+
