@@ -19,47 +19,48 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class Layout2Activity extends Activity {
+public class Layout1Activity extends Activity {
 
 	private Context mContext;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.layout1);
+
+		this.setContentView(R.layout.layout2);
 		mContext = this;
 		findViews();
 		setListeners();
 	}
 
-	Button btn1, btn2, btn3, btn_save;
-	ImageView image1, image2, image3;
-	Bitmap bm1, bm2, bm3;
+	Button btn1, btn2, btn_save;
+	ImageView image1, image2;
+	Bitmap bm1, bm2;
 	
 	private void findViews() {
-		btn1 = (Button) findViewById(R.id.btn1_1);
-		btn2 = (Button) findViewById(R.id.btn1_2);
-		btn3 = (Button) findViewById(R.id.btn1_3);
+		
+		btn1 = (Button) findViewById(R.id.btn2_1);
+		btn2 = (Button) findViewById(R.id.btn2_2);
 		btn_save = (Button) findViewById(R.id.btn_save2);
-		image1 = (ImageView) findViewById(R.id.image1_1);
-		image2 = (ImageView) findViewById(R.id.image1_2);
-		image3 = (ImageView) findViewById(R.id.image1_3);
+		image1 = (ImageView) findViewById(R.id.image2_1);
+		image2 = (ImageView) findViewById(R.id.image2_2);
+		
 	}
 
 	private void setListeners() {
 		btn1.setOnClickListener(button1);
 		btn2.setOnClickListener(button2);
-		btn3.setOnClickListener(button3);
 		btn_save.setOnClickListener(button_save);
 	}
 	
 	private Button.OnClickListener button1 = new Button.OnClickListener() {
 		public void onClick(View v) {
-			Intent intent = new Intent(Layout2Activity.this,
+			Intent intent = new Intent(Layout1Activity.this,
 					SinglePhotoSelectActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putInt("position", 1);
-			bundle.putString("WhoCalledMe", Layout2Activity.class.toString());
+			bundle.putString("WhoCalledMe", Layout1Activity.class.toString());
 			intent.putExtra("Layout", bundle);
 			startActivity(intent);
 		}
@@ -67,41 +68,42 @@ public class Layout2Activity extends Activity {
 
 	private Button.OnClickListener button2 = new Button.OnClickListener() {
 		public void onClick(View v) {
-			Intent intent = new Intent(Layout2Activity.this,
+			Intent intent = new Intent(Layout1Activity.this,
 					SinglePhotoSelectActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putInt("position", 2);
-			bundle.putString("WhoCalledMe", Layout2Activity.class.toString());
+			bundle.putString("WhoCalledMe", Layout1Activity.class.toString());
 			intent.putExtra("Layout", bundle);
 			startActivity(intent);
 		}
 	};
 	
-	private Button.OnClickListener button3 = new Button.OnClickListener() {
-		public void onClick(View v) {
-			Intent intent = new Intent(Layout2Activity.this,
-					SinglePhotoSelectActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putInt("position", 3);
-			bundle.putString("WhoCalledMe", Layout2Activity.class.toString());
-			intent.putExtra("Layout", bundle);
-			startActivity(intent);
-		}
-	};
-
 	private Button.OnClickListener button_save = new Button.OnClickListener() {
 		public void onClick(View v) {
-			Bitmap s1 = bm1;
-			Bitmap s2 = add2BitmapHorizontal(bm2, bm3);
-			Bitmap s = add2BitmapVertical(s1, s2);
+			Bitmap s1 = add2BitmapHorizontal(bm1, bm2);
 			long a = System.currentTimeMillis();
-			saveMyBitmap(new Long(a).toString(), s);
+			saveMyBitmap(new Long(a).toString(), s1);
 			Intent i = new Intent(mContext, LayoutSettingActivity.class);
 			startActivity(i);
 			finish();
 		}
 
 	};
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		// TODO Auto-generated method stub
+		super.onNewIntent(intent);
+
+		Bundle b = intent.getBundleExtra("Bundle");
+		try {
+			setImage(b.getInt("position"), b.getString("PicPath"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	
 	private void setImage(int position, String path) throws IOException {
 		File file = new File(path);
@@ -123,32 +125,10 @@ public class Layout2Activity extends Activity {
 			btn2.setVisibility(btn2.INVISIBLE);
 			break;
 		}
-		case 3: {
-			Bitmap bitmap = MediaStore.Images.Media.getBitmap(
-					this.getContentResolver(), uri);
-			bm3 = bitmap;
-			image3.setImageBitmap(bitmap);
-			btn3.setVisibility(btn3.INVISIBLE);
-			break;
-		}
+		
 		}
 	}
 	
-	@Override
-	protected void onNewIntent(Intent intent) {
-		// TODO Auto-generated method stub
-		super.onNewIntent(intent);
-
-		Bundle b = intent.getBundleExtra("Bundle");
-		try {
-			setImage(b.getInt("position"), b.getString("PicPath"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
 	private Bitmap add2BitmapHorizontal(Bitmap first, Bitmap second) {
 		int width = first.getWidth() + second.getWidth() + 5;
 		int height = Math.max(first.getHeight(), second.getHeight());
@@ -156,17 +136,6 @@ public class Layout2Activity extends Activity {
 		Canvas canvas = new Canvas(result);
 		canvas.drawBitmap(first, 0, 0, null);
 		canvas.drawBitmap(second, first.getWidth() + 5, 0, null);
-		return result;
-	}
-	
-	private Bitmap add2BitmapVertical(Bitmap s1, Bitmap s2) {
-		// TODO Auto-generated method stub
-		int width = Math.max(s1.getWidth(), s2.getWidth());
-		int height = s1.getHeight() + s2.getHeight() + 5;
-		Bitmap result = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-		Canvas canvas = new Canvas(result);
-		canvas.drawBitmap(s1, 0, 0, null);
-		canvas.drawBitmap(s2, 0, s1.getHeight() + 5, null);
 		return result;
 	}
 	

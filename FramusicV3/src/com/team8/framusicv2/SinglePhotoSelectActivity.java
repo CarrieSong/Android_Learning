@@ -119,8 +119,8 @@ public class SinglePhotoSelectActivity extends BaseActivity {
 			startActivity(i);
 			finish();
 		}
-		else if(whoCalledMe2.contains("Layout2Activity")){
-			Intent i = new Intent(this,Layout2Activity.class);
+		else if(whoCalledMe2.contains("Layout1Activity")){
+			Intent i = new Intent(this,Layout1Activity.class);
 			Bundle b = new Bundle();
 			b.putInt("position", position2);
 			b.putString("PicPath", PicPath);
