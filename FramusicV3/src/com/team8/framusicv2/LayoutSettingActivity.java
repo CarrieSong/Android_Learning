@@ -25,6 +25,7 @@ public class LayoutSettingActivity extends Activity {
 		mContext = this;
 		getSharedPreferences();
 		processExtraData();
+		
 
 		ImageButton layout1 = (ImageButton) findViewById(R.id.layout1);
 		layout1.setOnClickListener(new OnClickListener(){

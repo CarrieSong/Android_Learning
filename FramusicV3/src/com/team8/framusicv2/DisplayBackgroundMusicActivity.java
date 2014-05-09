@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.team8.framusicv2.musicplay.MusicPlayer;
 
@@ -36,12 +38,14 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -115,7 +119,7 @@ public class DisplayBackgroundMusicActivity extends Activity {
 		if (musicPlayer == null) {
 			musicPlayer = new MusicPlayer(mContext);
 		}
-
+		this.imageView = (ImageView) this.findViewById(R.id.imageView);
 		this.getSharedPreferences();
 		this.setFromPreferencesValue();
 		this.saveSharedPreferences();
@@ -199,16 +203,17 @@ public class DisplayBackgroundMusicActivity extends Activity {
 		/* copy from framusicp */
 
 		Button reset = (Button) findViewById(R.id.reset);
-		reset.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mFirstTimeOpen = true;
-				saveSharedPreferences();
-			}
-
-		});
+		reset.setVisibility(reset.GONE);
+//		reset.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				mFirstTimeOpen = true;
+//				saveSharedPreferences();
+//			}
+//
+//		});
 
 		mPlayStopMusic = (Button) findViewById(R.id.play_stop_music);
 		mPrevious = (Button) findViewById(R.id.previous);
@@ -248,7 +253,7 @@ public class DisplayBackgroundMusicActivity extends Activity {
 
 		notificationManager = (NotificationManager) getSystemService(svcName);
 
-		this.imageView = (ImageView) this.findViewById(R.id.imageView);
+
 		try {
 			updateUI();
 		} catch (FileNotFoundException e) {
@@ -297,7 +302,7 @@ public class DisplayBackgroundMusicActivity extends Activity {
 	public void updateUI() throws FileNotFoundException, IOException {
 
 		refreshHandler.sleep(7010);
-		if (!stopSlidingShow) {
+		if (!activeStopSlidingShow) {
 			animationSet = new AnimationSet(true);
 			Animation fadeOutAnimation = new AlphaAnimation(1.0f, 0.0f);
 			Animation fadeInAnimation = new AlphaAnimation(0.0f, 1.0f);
@@ -406,7 +411,22 @@ public class DisplayBackgroundMusicActivity extends Activity {
 
 		b = intent.getBundleExtra("MusicBundle");
 		if (b != null) {
-
+			ArrayList<String> tPicList = b.getStringArrayList("PicList");
+			if(tPicList != null){
+				picList = tPicList;
+				
+				try {
+					ImageCurrentCount = 0;
+					updateUI();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
 			currentMusic = b.getInt("CurrenMusic");
 			musicList = b.getStringArrayList("MusicList");
 			if (musicList != null) {
@@ -460,7 +480,22 @@ public class DisplayBackgroundMusicActivity extends Activity {
 
 		b = intent.getBundleExtra("MusicBundle");
 		if (b != null) {
-
+			ArrayList<String> tPicList = b.getStringArrayList("PicList");
+			if(tPicList != null){
+				picList = tPicList;
+				
+				try {
+					ImageCurrentCount = 0;
+					updateUI();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
 			currentMusic = b.getInt("CurrenMusic");
 			musicList = b.getStringArrayList("MusicList");
 			if (musicList != null) {
@@ -485,12 +520,12 @@ public class DisplayBackgroundMusicActivity extends Activity {
 		// if (b != null) {
 		// mWhoCalledMe = b.getString("WHO_CALLED_ME");
 		// }
-		if (stopPlayingMusic) {
+		/*if (stopPlayingMusic) {
 			musicPlayer.pause();
 			playing = musicPlayer.isPlaying();
 			mPlayStopMusic.setBackgroundResource(R.drawable.ic_action_play);
 			Toast.makeText(mContext, "Pause", Toast.LENGTH_LONG).show();
-		}
+		}*/
 		if (alarmOnOff == true) {
 			startMusicAlarm();
 			stopMusicAlarm();
@@ -530,6 +565,9 @@ public class DisplayBackgroundMusicActivity extends Activity {
 		}
 
 		stopSlidingShow = sp.getBoolean("STOP_SLIDING_SHOW", stopSlidingShow);
+		if(stopSlidingShow == false){
+			this.activeStopSlidingShow = false;
+		}
 		stopPlayingMusic = sp
 				.getBoolean("STOP_PLAYING_MUSIC", stopPlayingMusic);
 		quitFramusic = sp.getBoolean("QUIT_FRAMUSIC", quitFramusic);
@@ -769,6 +807,7 @@ public class DisplayBackgroundMusicActivity extends Activity {
 		mDrawerList.setAdapter(adapter);
 	}
 
+	private boolean activeStopSlidingShow = false ;
 	private void monitorBatteryState() {
 		batteryLevelRcvr = new BroadcastReceiver() {
 
@@ -818,6 +857,7 @@ public class DisplayBackgroundMusicActivity extends Activity {
 								sb.append(": stop sliding show");
 								Toast t = Toast.makeText(mContext, sb,
 										Toast.LENGTH_LONG);
+								activeStopSlidingShow = true;
 								t.setGravity(Gravity.CENTER, 0, 0);
 								t.show();
 							}
@@ -1049,4 +1089,41 @@ public class DisplayBackgroundMusicActivity extends Activity {
 
 	int NOTIFICATION_REF_STARTMUSICALARM = 1;
 	int NOTIFICATION_REF_STOPMUSICALARM = 2;
+
+	private boolean isExit;
+	private Timer tExit;
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (isExit == false) {
+				isExit = true;
+				if (tExit != null) {
+					tExit.cancel();
+				}
+
+				tExit = new Timer();
+				TimerTask task = new TimerTask() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						isExit = false;
+					}
+
+				};
+
+				Toast toast = Toast.makeText(mContext,
+						"Press again to close the app",
+						Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				tExit.schedule(task, 2000);
+			} else {
+				return super.onKeyDown(keyCode, event);
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }
