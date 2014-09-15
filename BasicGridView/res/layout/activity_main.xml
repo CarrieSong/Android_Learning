@@ -1,0 +1,21 @@
+<FrameLayout 
+    android:id="@+id/FrameLayout01" 
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent">
+
+    <ImageView 
+        android:id="@+id/ImageView01" 
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent" 
+        android:src="@drawable/wallpaper0">        
+    </ImageView>
+    
+    <Gallery 
+        android:id="@+id/Gallery01" 
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:spacing="5dp">   
+    </Gallery>
+
+</FrameLayout>
