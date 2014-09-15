@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
+
+    <ProgressBar 
+        android:id="@+id/ProgressBar01"
+ 		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+ 	</ProgressBar>
+ 	
+    <ProgressBar 
+        android:id="@+id/ProgressBar02"
+		style="?android:attr/progressBarStyleLarge"          
+ 		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	</ProgressBar>
+
+	<ProgressBar 
+    	android:id="@+id/ProgressBar03"
+		style="?android:attr/progressBarStyleSmall"       
+ 		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	</ProgressBar>
+	
+	<ProgressBar 
+	    android:id="@+id/ProgressBar04"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:max="100"                                
+		android:progress="00"                            
+		android:secondaryProgress="20"             
+		android:layout_width="fill_parent"              
+		android:layout_height="wrap_content">
+	</ProgressBar>
+	
+	
+	<SeekBar 
+	    android:id="@+id/SeekBar01" 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="fill_parent"> 
+    </SeekBar> 
+ 
+    <TextView 
+        android:id="@+id/TextView01" 
+        android:layout_height="wrap_content" 
+        android:layout_width="fill_parent" 
+        android:textSize="25sp">  
+    </TextView>	
+    
+    <RatingBar
+		android:id="@+id/RatingBar01"
+		android:layout_width="wrap_content"
+		android:rating="3"                                            
+ 		android:layout_marginTop="10dp"
+		android:layout_height="wrap_content">
+	</RatingBar>
+	
+    <RatingBar
+		android:id="@+id/RatingBar02"
+		android:layout_width="wrap_content"
+		android:numStars="5"                                     
+ 		android:rating="4"                                    
+ 		android:isIndicator="false"         
+ 		style="?android:attr/ratingBarStyleIndicator"  
+ 		android:layout_marginTop="10dp"
+		android:layout_height="wrap_content">
+	</RatingBar>
+	
+    <RatingBar
+		android:id="@+id/RatingBar03"
+		android:layout_width="wrap_content"
+		android:isIndicator="false"                          
+ 		android:numStars="10"
+		android:rating="6"
+ 		style="?android:attr/ratingBarStyleSmall"      
+ 		android:layout_marginTop="10dp"
+		android:layout_height="wrap_content">
+	</RatingBar>
+	
+</LinearLayout>
