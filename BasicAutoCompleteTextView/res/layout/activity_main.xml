@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Province" ></TextView>
+    
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter a province..."
+        android:completionThreshold="1"
+        android:ems="10" ></AutoCompleteTextView>  
+
+</LinearLayout>
