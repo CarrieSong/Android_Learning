@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BasicLesson8</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="color">Select a color:</string>
+    <string-array name="colors">
+        <item >Black</item>
+        <item >White</item>
+        <item >Red</item>
+        <item >Yellow</item>
+        <item >Blue</item>
+        <item >Green</item>
+    </string-array>
+
+</resources>
